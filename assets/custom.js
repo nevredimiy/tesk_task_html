@@ -35,16 +35,15 @@ submitBtn.addEventListener('click', (event) => {
     event.preventDefault();
     let commentsText = document.getElementById("commentTextarea");
     let comment = {
-        comment: commentsText.value,
-        time: Date.now()/1000/60
+      comment: commentsText.value,
+      time: Date.now() / 1000 / 60,
+      timeAgo: 'Now'
     }
     commentsText.value = '';
-    commentsArr.push(comment);
+    commentsArr.unshift(comment);
     localStorage.setItem('comments', JSON.stringify(commentsArr));
     showComments();
-    console.log(commentsArr);
-    let element = document?.querySelector('new-comments-block');
-    if (element) console.log('я существую ');
+  currentTime();
 })
 
 const showComments = () => {
@@ -83,7 +82,7 @@ const showComments = () => {
                   </small>
                   <small>
                     <u>
-                      <font style="vertical-align: inherit;">Now</font>
+                      <font style="vertical-align: inherit;">${item.timeAgo}</font>
                     </u>
                   </small>
                 </font>
@@ -96,21 +95,25 @@ const showComments = () => {
               </div>
             </div>`
     })
-    newComments.innerHTML = out;
+  newComments.innerHTML = out;
 }
 
 const currentTime = () => {
-    const timeAgo = () => {
-        let a = Math.floor(Date.now() / 1000 / 60 - commentsArr[0]?.time);
-        if (a == 0) {
-            console.log('now')
-        } else {
-            console.log(a + ' minutos antes')
-        }
-
-    }
-    setInterval(timeAgo, 2000);
+console.log('зашли в функцию');
+    commentsArr.forEach(item => {
+      let t = Math.floor(Date.now() / 1000 / 60 - item.time);
+      if (t == 0) {
+        item.timeAgo = 'Now'
+        console.log('ya tut');
+      } else {
+        item.timeAgo = `${t} minutos antes`
+        console.log('time' + t);
+      }
+    })
+  localStorage.setItem('comments', JSON.stringify(commentsArr));
 }
+setInterval(currentTime, 60000);
 
+console.log(localStorage.getItem("comments"));
 
 document.getElementById("clear-localstorage").addEventListener('click', () => { localStorage.clear(); document.location.reload() });
