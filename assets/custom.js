@@ -32,8 +32,12 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 submitBtn.addEventListener('click', (event) => {
-    event.preventDefault();
-    let commentsText = document.getElementById("commentTextarea");
+  event.preventDefault();
+  let commentsText = document.getElementById("commentTextarea");
+    if(commentsText.value.trim().length < 1) {
+      alert("Please Enter Text...");
+      return;
+    }
     let comment = {
       comment: commentsText.value,
       time: Date.now() / 1000 / 60,
@@ -110,7 +114,5 @@ const currentTime = () => {
   localStorage.setItem('comments', JSON.stringify(commentsArr));
 }
 setInterval(currentTime, 60000);
-
-
-
+//clear localStorage
 document.getElementById("clear-localstorage").addEventListener('click', () => { localStorage.clear(); document.location.reload() });
