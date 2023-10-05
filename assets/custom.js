@@ -99,21 +99,18 @@ const showComments = () => {
 }
 
 const currentTime = () => {
-console.log('зашли в функцию');
     commentsArr.forEach(item => {
       let t = Math.floor(Date.now() / 1000 / 60 - item.time);
       if (t == 0) {
         item.timeAgo = 'Now'
-        console.log('ya tut');
       } else {
         item.timeAgo = `${t} minutos antes`
-        console.log('time' + t);
       }
     })
   localStorage.setItem('comments', JSON.stringify(commentsArr));
 }
 setInterval(currentTime, 60000);
 
-console.log(localStorage.getItem("comments"));
+
 
 document.getElementById("clear-localstorage").addEventListener('click', () => { localStorage.clear(); document.location.reload() });
